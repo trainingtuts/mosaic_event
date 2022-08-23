@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "983962471521",
+    "project_id": "mosaic-events-6c710",
+    "storage_bucket": "mosaic-events-6c710.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:983962471521:android:8a50160d60bf869d212e20",
+        "android_client_info": {
+          "package_name": "com.example.mosaic_event"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "983962471521-59itans2j1s5of9sjjgr4mjj5f4jnmql.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC9LyFGfH6f3SyI2-cx1XfQ6nuvBr-bwY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "983962471521-59itans2j1s5of9sjjgr4mjj5f4jnmql.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
