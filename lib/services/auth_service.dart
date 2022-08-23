@@ -11,4 +11,7 @@ class AuthService {
     }
     return currentUser;
   }
+
+  bool? isAnonymous() => currentUser?.isAnonymous;
+  userID() => currentUser?.uid;
 }
