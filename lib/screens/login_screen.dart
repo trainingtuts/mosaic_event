@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mosaic_event/screens/signup_screen.dart';
+import 'package:mosaic_event/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -16,12 +18,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  //firebase
-
-  // final _auth = FirebaseAuth.instance;
-
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+
     // email field
     final emailField = TextFormField(
       autofocus: false,
@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
       borderRadius: BorderRadius.circular(10),
       child: MaterialButton(
         onPressed: () {
-          // signIn(emailController.text, passwordController.text);
+          authService.signIn(emailController.text, passwordController.text);
         },
         padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,

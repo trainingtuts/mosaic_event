@@ -40,6 +40,8 @@ dependencies:
   firebase_auth: ^3.6.4
   provider: ^6.0.3
   carousel_slider: ^4.1.1
+  cloud_firestore: ^3.4.5
+  dropdown_textfield: ^1.0.3
 
 dev_dependencies:
   flutter_test:

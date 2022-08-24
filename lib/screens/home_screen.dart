@@ -1,15 +1,17 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_import
 
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mosaic_event/services/auth_service.dart';
 import 'package:mosaic_event/theme/theme.dart';
 import 'package:mosaic_event/utils/bottom_appbar.dart';
 import 'package:mosaic_event/utils/carousel.dart';
 import 'package:mosaic_event/utils/categories.dart';
 import 'package:mosaic_event/utils/drawer.dart';
 import 'package:mosaic_event/utils/heading.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -27,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   bool showBottomAppBar = true;
 
-  User? user = FirebaseAuth.instance.currentUser;
+  // User? user = FirebaseAuth.instance.currentUser;
   // UserModel loggedInUser = UserModel();
 
   // @override

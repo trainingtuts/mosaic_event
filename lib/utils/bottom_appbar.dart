@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:mosaic_event/screens/profile_screen.dart';
 import 'package:mosaic_event/theme/theme.dart';
 
 class MyBottomAppBar extends StatefulWidget {
@@ -82,8 +83,8 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
               padding: const EdgeInsets.only(right: 10),
               child: IconButton(
                 onPressed: () {
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => ProfilePage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ProfileScreen()));
                 },
                 icon: Icon(Icons.account_circle),
               ),

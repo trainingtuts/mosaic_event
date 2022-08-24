@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_import
 
 // import 'package:authentication_system/utils/upload_image.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
@@ -85,7 +85,15 @@ class _MyDrawerState extends State<MyDrawer> {
                 color: Colors.white,
               ),
               onTap: () {
-                logout(context);
+                setState(
+                  () {
+                    authService.signOut().then(
+                          (value) => {
+                            Fluttertoast.showToast(msg: 'SignOut Success'),
+                          },
+                        );
+                  },
+                );
               },
               title: const Text(
                 "Logout",

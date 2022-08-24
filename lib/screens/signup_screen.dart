@@ -2,8 +2,18 @@
 
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
+import 'package:mosaic_event/models/user_model.dart';
+import 'package:mosaic_event/screens/home_screen.dart';
+import 'package:mosaic_event/services/auth_service.dart';
+import 'package:provider/provider.dart';
+
+enum Gender { male, female, other }
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -13,9 +23,10 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  // Gender? _gender = Gender.male;
   final defaultImage = Image.asset('assets/default/default_pp.png');
   // auth
-  // final _auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
 
   // form key
   final _formKey = GlobalKey<FormState>();
@@ -24,12 +35,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController firstnameController = TextEditingController();
   final TextEditingController lastnameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  String? _gender;
+  final _genderList = ['Male', 'Female', 'Other'];
+
+  PhoneNumber? phoneNumber;
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     // firstname field
     final firstnameField = TextFormField(
       autofocus: false,
@@ -110,6 +127,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
 
+    // gender field
+    final genderField = DropdownButtonHideUnderline(
+        child: DropdownButtonFormField(
+      hint: Text("Select Gender"),
+      value: _gender,
+      items: _genderList
+          .map(
+            (e) => DropdownMenuItem(value: e, child: Text(e)),
+          )
+          .toList(),
+      onChanged: (value) {
+        setState(() {
+          _gender = value.toString();
+        });
+      },
+      decoration: InputDecoration(
+        // contentPadding: const EdgeInsets.all(0),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        labelText: "Gender",
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    ));
+
     // phone no field
     final phoneNoField = IntlPhoneField(
       decoration: InputDecoration(
@@ -124,6 +166,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       showDropdownIcon: false,
       flagsButtonPadding: EdgeInsets.only(left: 12),
       initialCountryCode: 'PK',
+      onSaved: ((value) {
+        this.phoneNumber = value;
+      }),
     );
 
     // password field
@@ -183,7 +228,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
       borderRadius: BorderRadius.circular(10),
       child: MaterialButton(
         onPressed: () {
-          // signUp(emailController.text, passwordController.text);
+          if (_formKey.currentState!.validate()) {
+            authService
+                .createUserWithEmailAndPassword(
+                    emailController.text, passwordController.text)
+                .then(
+                  (value) => postDetailsToFirestore(),
+                )
+                .catchError((error) {
+              Fluttertoast.showToast(msg: error!.message);
+            });
+          }
         },
         padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
@@ -205,7 +260,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            // passing to our root
             Navigator.of(context).pop();
           },
           icon: const Icon(
@@ -227,27 +281,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     // Profile Pic
-                    GestureDetector(
-                      onTap: () {
-                        log("Upload image");
-                      },
-                      child: CircleAvatar(
-                        backgroundColor: Colors.black,
-                        radius: 70,
-                        child: ClipRRect(
-                          child: Image.network(
-                            "http://www.google.de/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
-                            loadingBuilder: (context, child, loadingProgress) =>
-                                (loadingProgress == null)
-                                    ? child
-                                    : CircularProgressIndicator(),
-                            errorBuilder: (context, error, stackTrace) =>
-                                defaultImage,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     log("Upload image");
+                    //   },
+                    //   child: CircleAvatar(
+                    //     backgroundColor: Colors.black,
+                    //     radius: 70,
+                    //     child: ClipRRect(
+                    //       child: Image.network(
+                    //         "http://www.google.de/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+                    //         loadingBuilder: (context, child, loadingProgress) =>
+                    //             (loadingProgress == null)
+                    //                 ? child
+                    //                 : CircularProgressIndicator(),
+                    //         errorBuilder: (context, error, stackTrace) =>
+                    //             defaultImage,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // SizedBox(height: 20),
                     firstnameField,
                     const SizedBox(height: 10),
                     lastnameField,
@@ -260,6 +314,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(height: 10),
                     confirmPasswordField,
                     const SizedBox(height: 10),
+                    genderField, const SizedBox(height: 10),
+                    // Row(
+                    //   children: <Widget>[
+                    //     Expanded(
+                    //       child: RadioListTile<Gender>(
+                    //         contentPadding: EdgeInsets.zero,
+                    //         value: Gender.male,
+                    //         title: Text("Male"),
+                    //         groupValue: _gender,
+                    //         onChanged: (Gender? value) {
+                    //           setState(() {
+                    //             _gender = value;
+                    //             // business = false;
+                    //             // individual = true;
+                    //             log('character $_gender');
+                    //           });
+                    //         },
+                    //       ),
+                    //     ),
+                    //     Expanded(
+                    //       child: RadioListTile<Gender>(
+                    //         contentPadding: EdgeInsets.zero,
+                    //         value: Gender.female,
+                    //         title: Text("Female"),
+                    //         groupValue: _gender,
+                    //         onChanged: (Gender? value) {
+                    //           setState(() {
+                    //             _gender = value;
+                    //             // business = true;
+                    //             // individual = false;
+                    //             log('character $_gender');
+                    //           });
+                    //         },
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     signupButton,
                     const SizedBox(height: 10),
                     Row(
@@ -302,27 +393,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
   //   }
   // }
 
-  /* postDetailsToFirestore() async {
+  postDetailsToFirestore() async {
     // 1. calling our firestore
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
     // 2. calling our user_model
     UserModel userModel = UserModel();
     // 3. writing values
-    userModel.email = user!.email;
-    userModel.uid = user.uid;
-    userModel.firstname = firstnameController.text;
-    userModel.lastname = lastnameController.text;
-    // 4. sending values to DB
-    await firebaseFirestore
-        .collection("user")
-        .doc(user.uid)
-        .set(userModel.toMap());
+    if (user != null) {
+      userModel.uid = user.uid;
+      userModel.firstname = firstnameController.text;
+      userModel.lastname = lastnameController.text;
+      userModel.email = user.email;
+      // userModel.role = user.email;
+      // userModel.phoneNo = user.email;
+      userModel.gender = _gender;
+      userModel.joiningDate = DateTime.now();
+      // userModel.profileUrl = user.email;
+      userModel.isActive = true;
+      // 4. sending values to DB
+      await firebaseFirestore
+          .collection("users")
+          .doc(user.uid)
+          .set(userModel.toMap())
+          .whenComplete(() {
+        var currentUserr = FirebaseAuth.instance.currentUser!;
+        currentUserr.updateDisplayName(
+            "${firstnameController.text} ${lastnameController.text}");
+        currentUserr.updateEmail(emailController.text);
+      });
 
-    Fluttertoast.showToast(msg: "Account created successfully :)");
-    Navigator.pushAndRemoveUntil(
+      Fluttertoast.showToast(msg: "Account created successfully :)");
+      Navigator.push(
         (context),
-        MaterialPageRoute(builder: (context) => const HomePage()),
-        (route) => false);
-  }*/
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    }
+  }
 }
