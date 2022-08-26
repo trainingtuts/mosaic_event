@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_constructors,
 
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mosaic_event/forms/profile_update_form.dart';
 import 'package:mosaic_event/services/auth_service.dart';
 import 'package:mosaic_event/theme/theme.dart';
+import 'package:mosaic_event/utils/upload_image.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -56,19 +59,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       backgroundColor: MyColors.primaryColor,
                       child: CircleAvatar(
                         radius: 38.0,
-                        backgroundImage: data['profileUrl'] == null
+                        backgroundImage: data['profileUrl'] != null
                             ? NetworkImage("${data['profileUrl']}")
                             : AssetImage("assets/default/default_pp.png")
                                 as ImageProvider,
-                        child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 12.0,
-                            child: Icon(
-                              Icons.camera_alt,
-                              size: 15.0,
-                              color: Color(0xFF404040),
+                        child: GestureDetector(
+                          onTap: () {
+                            UploadImage.uploadProfileImage();
+                            log("profile Pic");
+                          },
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 12.0,
+                              child: Icon(
+                                Icons.camera_alt,
+                                size: 15.0,
+                                color: Color(0xFF404040),
+                              ),
                             ),
                           ),
                         ),
@@ -127,6 +136,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               fontWeight: FontWeight.w500,
                               fontSize: 16.0,
                             ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: TextButton(
+                      onPressed: () {
+                        // TODO: delete User
+                        authService.currentUser!.delete();
+                      },
+                      style: TextButton.styleFrom(
+                          backgroundColor: Colors.amberAccent),
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                        decoration: BoxDecoration(
+                          color: MyColors.primaryColor,
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                        ),
+                        child: Text(
+                          'Delete Profile',
+                          style: TextStyle(
+                            fontFamily: 'SF Pro',
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
                           ),
                         ),
                       ),

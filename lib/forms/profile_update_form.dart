@@ -18,11 +18,10 @@ class _UpdateFormState extends State<UpdateForm> {
   String? _email;
   PhoneNumber? phoneNumber;
 
-  final _genderList = ['Male', 'Female', 'Other'];
-  final _roleList = ['Personal', 'Business'];
-
   // form key
   final _updateProfileFormKey = GlobalKey<FormState>();
+
+  String? _name;
 
   @override
   Widget build(BuildContext context) {
@@ -62,14 +61,39 @@ class _UpdateFormState extends State<UpdateForm> {
                 Map<String, dynamic> userData =
                     snapshot.data!.data() as Map<String, dynamic>;
                 _email = userData['email'];
+                _name = userData['fullname'];
                 return Column(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextFormField(
-                      autofocus: false,
-                      initialValue: _email,
+                      initialValue: _name,
                       keyboardType: TextInputType.name,
+                      validator: (value) {
+                        RegExp regex = RegExp(r'^.{3,}$');
+                        if (value!.isEmpty) {
+                          return "Please enter your name";
+                        }
+                        if (!regex.hasMatch(value)) {
+                          return "Enter minimum 3 Character";
+                        }
+                        return null;
+                      },
+                      onSaved: (newName) {
+                        _name = newName;
+                      },
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.account_circle),
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      initialValue: _email,
+                      keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Please enter email address";
@@ -80,8 +104,8 @@ class _UpdateFormState extends State<UpdateForm> {
                         }
                         return null;
                       },
-                      onChanged: (value) {
-                        _email = value;
+                      onChanged: (newEmail) {
+                        _email = newEmail;
                       },
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
@@ -99,10 +123,11 @@ class _UpdateFormState extends State<UpdateForm> {
                       borderRadius: BorderRadius.circular(10),
                       child: MaterialButton(
                         onPressed: () {
-                          updateUserProfile(_email);
+                          updateUserProfile(_email, _name);
                         },
                         padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                         minWidth: MediaQuery.of(context).size.width,
+                        height: 10,
                         child: const Text(
                           "Update",
                           textAlign: TextAlign.center,
@@ -130,19 +155,26 @@ class _UpdateFormState extends State<UpdateForm> {
   }
 
   //update method
-  Future<void> updateUserProfile(email) {
+  Future<void> updateUserProfile(email, name) {
     final authService = Provider.of<AuthService>(context, listen: false);
     return FirebaseFirestore.instance
         .collection('users')
         .doc(authService.userID())
-        .update({'email': email}).then((value) {
-      Navigator.pop(context);
-      Fluttertoast.showToast(
-        msg: "Email Updated",
-        toastLength: Toast.LENGTH_LONG,
-      );
-    }).catchError((error) {
-      Fluttertoast.showToast(msg: "Error occured: $error");
-    });
+        .update(
+          {
+            'email': email,
+          },
+        )
+        .whenComplete(() => authService.currentUser!.updateEmail(email))
+        .then((value) {
+          Navigator.pop(context);
+          Fluttertoast.showToast(
+            msg: "Email Updated",
+            toastLength: Toast.LENGTH_LONG,
+          );
+        })
+        .catchError((error) {
+          Fluttertoast.showToast(msg: "Error occured: $error");
+        });
   }
 }
