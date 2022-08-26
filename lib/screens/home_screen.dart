@@ -31,8 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   bool showBottomAppBar = true;
 
-  // User? user = FirebaseAuth.instance.currentUser;
-
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);

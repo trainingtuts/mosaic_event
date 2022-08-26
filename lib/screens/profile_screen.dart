@@ -144,8 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Center(
                     child: TextButton(
                       onPressed: () {
-                        // TODO: delete User
-                        authService.currentUser!.delete();
+                        // Delete User
                       },
                       style: TextButton.styleFrom(
                           backgroundColor: Colors.amberAccent),
