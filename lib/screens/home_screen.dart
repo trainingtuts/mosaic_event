@@ -2,8 +2,10 @@
 
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mosaic_event/models/user_model.dart';
 import 'package:mosaic_event/services/auth_service.dart';
 import 'package:mosaic_event/theme/theme.dart';
 import 'package:mosaic_event/utils/bottom_appbar.dart';
@@ -30,25 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
   bool showBottomAppBar = true;
 
   // User? user = FirebaseAuth.instance.currentUser;
-  // UserModel loggedInUser = UserModel();
-
-  // @override
-  // void initState() {
-  //   // FirebaseFirestore.instance
-  //   //     .collection("user")
-  //   //     .doc(user!.uid)
-  //   //     .get()
-  //   //     .then((value) {
-  //   //   loggedInUser = UserModel.fromMap(value.data());
-  //   //   setState(() {});
-  //   // });
-  //   // For bottomAppBar
-
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Scaffold(
       drawer: MyDrawer(),
       // App Bar
@@ -56,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: MyColors.primaryColor,
         title: Text(
-          "Home",
+          "Welcome, ${authService.currentUser!.displayName}",
           style: TextStyle(
             color: Colors.black,
           ),

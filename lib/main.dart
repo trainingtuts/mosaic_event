@@ -1,14 +1,12 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:mosaic_event/screens/home_screen.dart';
 import 'package:mosaic_event/services/auth_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:mosaic_event/utils/wrapper.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // await AuthService().getOrCreateUser();
 
   runApp(const MyApp());
 }
@@ -22,6 +20,9 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider<AuthService>(
           create: (_) => AuthService(),
+        ),
+        Provider<CloudService>(
+          create: (_) => CloudService(),
         )
       ],
       child: MaterialApp(

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:mosaic_event/models/user_model.dart';
 
@@ -6,6 +7,9 @@ class AuthService {
 
   // GET UID
   userID() => _auth.currentUser?.uid;
+
+  // GET CurrentUser
+  auth.User? currentUser = auth.FirebaseAuth.instance.currentUser;
 
   bool? isAnonymous() => _auth.currentUser?.isAnonymous;
 
@@ -49,8 +53,7 @@ class AuthService {
   // register with email and password
   Future<UserModel?> createUserWithEmailAndPassword(
       String email, String password) async {
-    final credential = await _auth
-        .createUserWithEmailAndPassword(
+    final credential = await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -62,4 +65,9 @@ class AuthService {
   Future<void> signOut() async {
     return await _auth.signOut();
   }
+}
+
+class CloudService {
+  CollectionReference usersCollection =
+      FirebaseFirestore.instance.collection('users');
 }

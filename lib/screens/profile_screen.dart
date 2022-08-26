@@ -1,11 +1,8 @@
 // ignore_for_file: prefer_const_constructors,
 
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mosaic_event/models/user_model.dart';
+import 'package:mosaic_event/forms/profile_update_form.dart';
 import 'package:mosaic_event/services/auth_service.dart';
 import 'package:mosaic_event/theme/theme.dart';
 import 'package:provider/provider.dart';
@@ -18,27 +15,11 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // User? user = FirebaseAuth.instance.currentUser;
-  // UserModel loggedInUser = UserModel();
-
-  // @override
-  // void initState() {
-  //   FirebaseFirestore.instance
-  //       .collection("users")
-  //       .doc(user!.uid)
-  //       .get()
-  //       .then((value) {
-  //     print(value);
-  //     loggedInUser = UserModel.fromMap(value.data());
-  //     setState(() {});
-  //   });
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    // CollectionReference users = FirebaseFirestore.instance.collection('users');
     final authService = Provider.of<AuthService>(context);
+    final cloudService = Provider.of<CloudService>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -49,21 +30,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
           color: Colors.black,
         ),
       ),
-      body: FutureBuilder<DocumentSnapshot>(
-        future: users.doc(authService.userID()).get(),
+      body: StreamBuilder(
+        stream:
+            cloudService.usersCollection.doc(authService.userID()).snapshots(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Text("Something went wrong");
-          }
-
-          if (snapshot.hasData && !snapshot.data!.exists) {
-            return Text("Document does not exist");
-          }
-
-          if (snapshot.connectionState == ConnectionState.done) {
-            Map<String, dynamic> data =
-                snapshot.data!.data() as Map<String, dynamic>;
+            return Center(
+              child: Text("Something went wrong"),
+            );
+          } else if (snapshot.hasData) {
+            final data = snapshot.data!;
             return Container(
               margin: EdgeInsets.all(16.0),
               decoration: BoxDecoration(
@@ -79,9 +56,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       backgroundColor: MyColors.primaryColor,
                       child: CircleAvatar(
                         radius: 38.0,
-                        backgroundImage:
-                            // AssetImage('assets/default/default_pp.png'),
-                            NetworkImage("$data['profileUrl']"),
+                        backgroundImage: data['profileUrl'] == null
+                            ? NetworkImage("${data['profileUrl']}")
+                            : AssetImage("assets/default/default_pp.png")
+                                as ImageProvider,
                         child: Align(
                           alignment: Alignment.bottomRight,
                           child: CircleAvatar(
@@ -101,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Container(
                       padding: EdgeInsets.only(top: 16.0),
                       child: Text(
-                        "${data['firstname']} ${data['lastname']}",
+                        "${data['fullname']}",
                         style: TextStyle(
                           fontFamily: 'SF Pro',
                           fontWeight: FontWeight.w700,
@@ -114,7 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Container(
                       padding: EdgeInsets.only(top: 8.0),
                       child: Text(
-                        '${data['gender']}',
+                        "${data['gender']} | ${data['role']}",
                         style: TextStyle(
                           fontFamily: 'SF Pro',
                           fontSize: 12.0,
@@ -127,8 +105,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.all(24.0),
                       child: TextButton(
                         onPressed: () {
-                          log('im pressed');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UpdateForm()));
                         },
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.amberAccent),
                         child: Container(
                           padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
                           decoration: BoxDecoration(
@@ -153,8 +136,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             );
           }
-
-          return Text("loading");
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         },
       ),
     );

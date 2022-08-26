@@ -1,13 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:intl_phone_field/phone_number.dart';
 import 'package:mosaic_event/models/user_model.dart';
 import 'package:mosaic_event/screens/home_screen.dart';
 import 'package:mosaic_event/services/auth_service.dart';
@@ -32,30 +29,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
 
   // editing controller
-  final TextEditingController firstnameController = TextEditingController();
-  final TextEditingController lastnameController = TextEditingController();
+  final TextEditingController fullnameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
   String? _gender;
+  String? _role;
   final _genderList = ['Male', 'Female', 'Other'];
+  final _roleList = ['Personal', 'Business'];
 
-  PhoneNumber? phoneNumber;
+  String? _phoneNumber;
 
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
-    // firstname field
-    final firstnameField = TextFormField(
-      autofocus: false,
-      controller: firstnameController,
+    // fullname field
+    final fullnameField = TextFormField(
+      autofocus: true,
+      controller: fullnameController,
       keyboardType: TextInputType.name,
       validator: (value) {
         RegExp regex = RegExp(r'^.{3,}$');
         if (value!.isEmpty) {
-          return "Please enter first name";
+          return "Please enter your name";
         }
         if (!regex.hasMatch(value)) {
           return "Enter minimum 3 Character";
@@ -63,40 +61,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         return null;
       },
       onSaved: (value) {
-        firstnameController.text = value!;
+        fullnameController.text = value!;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.account_circle),
         contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: "First Name",
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-    );
-
-    // lastname field
-    final lastnameField = TextFormField(
-      autofocus: false,
-      controller: lastnameController,
-      keyboardType: TextInputType.name,
-      validator: (value) {
-        RegExp regex = RegExp(r'^.{3,}$');
-        if (value!.isEmpty) {
-          return "Please enter last name";
-        }
-        if (!regex.hasMatch(value)) {
-          return "Enter minimum 3 Character";
-        }
-        return null;
-      },
-      onSaved: (value) {
-        lastnameController.text = value!;
-      },
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        prefixIcon: const Icon(Icons.account_circle),
-        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: "Last Name",
+        hintText: "Full Name",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
@@ -152,6 +123,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     ));
 
+    // role field
+    final roleField = DropdownButtonHideUnderline(
+        child: DropdownButtonFormField(
+      hint: Text("Select Role"),
+      value: _role,
+      items: _roleList
+          .map(
+            (e) => DropdownMenuItem(value: e, child: Text(e)),
+          )
+          .toList(),
+      onChanged: (value) {
+        setState(() {
+          _role = value.toString();
+        });
+      },
+      decoration: InputDecoration(
+        // contentPadding: const EdgeInsets.all(0),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        labelText: "Role",
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    ));
+
     // phone no field
     final phoneNoField = IntlPhoneField(
       decoration: InputDecoration(
@@ -167,7 +163,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       flagsButtonPadding: EdgeInsets.only(left: 12),
       initialCountryCode: 'PK',
       onSaved: ((value) {
-        this.phoneNumber = value;
+        _phoneNumber = value!.completeNumber.toString();
       }),
     );
 
@@ -302,9 +298,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     //   ),
                     // ),
                     // SizedBox(height: 20),
-                    firstnameField,
-                    const SizedBox(height: 10),
-                    lastnameField,
+                    fullnameField,
                     const SizedBox(height: 10),
                     emailField,
                     const SizedBox(height: 10),
@@ -314,7 +308,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(height: 10),
                     confirmPasswordField,
                     const SizedBox(height: 10),
-                    genderField, const SizedBox(height: 10),
+                    genderField,
+                    const SizedBox(height: 10),
+                    roleField,
+                    const SizedBox(height: 10),
                     // Row(
                     //   children: <Widget>[
                     //     Expanded(
@@ -381,18 +378,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  // signup function
-  // void signUp(String email, String password) async {
-  //   if (_formKey.currentState!.validate()) {
-  //     await _auth
-  //         .createUserWithEmailAndPassword(email: email, password: password)
-  //         .then((value) => {postDetailsToFirestore()})
-  //         .catchError((e) {
-  //       Fluttertoast.showToast(msg: e!.message);
-  //     });
-  //   }
-  // }
-
   postDetailsToFirestore() async {
     // 1. calling our firestore
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -402,11 +387,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     // 3. writing values
     if (user != null) {
       userModel.uid = user.uid;
-      userModel.firstname = firstnameController.text;
-      userModel.lastname = lastnameController.text;
+      userModel.fullname = fullnameController.text;
       userModel.email = user.email;
-      // userModel.role = user.email;
-      // userModel.phoneNo = user.email;
+      userModel.role = _role;
+      userModel.phoneNo = _phoneNumber;
       userModel.gender = _gender;
       userModel.joiningDate = DateTime.now();
       // userModel.profileUrl = user.email;
@@ -418,8 +402,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           .set(userModel.toMap())
           .whenComplete(() {
         var currentUserr = FirebaseAuth.instance.currentUser!;
-        currentUserr.updateDisplayName(
-            "${firstnameController.text} ${lastnameController.text}");
+        currentUserr.updateDisplayName(fullnameController.text);
         currentUserr.updateEmail(emailController.text);
       });
 
