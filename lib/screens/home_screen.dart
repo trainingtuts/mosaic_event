@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -103,30 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
             MyHeading(title: "Trending"),
 
             // Carousel
-            StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("carousel_banners")
-                    .snapshots(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.hasError) {
-                    log("Something went wrong!");
-                  } else if (snapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  // fetching data
-                  final List carouselUrl = [];
-                  snapshot.data!.docs.map((DocumentSnapshot document) {
-                    Map bannerUrl = document.data() as Map;
-                    carouselUrl.add(bannerUrl);
-                  }).toList();
-                  return MyCarousel(source: carouselUrl);
-                }),
-            // Extra
-            MyHeading(title: "Trending"),
-            MyCarousel(source: _imageUrl),
+            MyCarousel(),
           ],
         ),
       ),
