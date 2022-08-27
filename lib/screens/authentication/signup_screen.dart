@@ -229,7 +229,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 .createUserWithEmailAndPassword(
                     emailController.text, passwordController.text)
                 .then(
-                  (value) => postDetailsToFirestore(),
+                  (value) => postUserDetailsToFirestore(),
                 )
                 .catchError((error) {
               Fluttertoast.showToast(msg: error!.message);
@@ -378,7 +378,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  postDetailsToFirestore() async {
+  postUserDetailsToFirestore() async {
     // 1. calling our firestore
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;

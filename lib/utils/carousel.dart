@@ -23,7 +23,6 @@ class _MyCarouselState extends State<MyCarousel> {
         aspectRatio: 16 / 9,
       ),
       items: widget.source.map((imagePath) {
-        // items: widget.source.map((i) {
         return Builder(
           builder: (BuildContext context) {
             return SizedBox(
@@ -31,14 +30,12 @@ class _MyCarouselState extends State<MyCarousel> {
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(imagePath),
+                    image: NetworkImage(imagePath['carousel_banners_url']),
                     fit: BoxFit.fill,
                   ),
                   borderRadius: BorderRadius.circular(12),
                   color: Colors.red,
                 ),
-                // child: Image.network(imagePath['downloadURL']),
-                // child: Image.asset("assets/images/image_1_c.png"),
               ),
             );
           },

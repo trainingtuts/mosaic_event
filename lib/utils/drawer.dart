@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mosaic_event/screens/setting_screen.dart';
 import 'package:mosaic_event/services/auth_service.dart';
 import 'package:mosaic_event/theme/theme.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +34,10 @@ class _MyDrawerState extends State<MyDrawer> {
                   color: Colors.white,
                 ),
                 onTap: () {
-                  log("Setting Pressed");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SettingScreen()));
                 },
                 title: const Text(
                   "Setting",
