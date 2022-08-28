@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:mosaic_event/screens/carousel/carousel_banner_list.dart';
+import 'package:mosaic_event/screens/settings/carousel_banner_list.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SettingScreen extends StatelessWidget {

@@ -2,7 +2,7 @@
 // DONE: Login with Email
 // DONE: Logout 
 // DONE: Upload && Update Profile Pic
-// DONE: Carousel working but at console it gives error.
+// DONE: Carousel working 
 // DONE: 
 // DONE: 
 // DONE: 
