@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:mosaic_event/screens/restaurants.dart';
 import 'package:mosaic_event/theme/theme.dart';
 
 // import '../themes/my_theme.dart';
@@ -28,8 +29,11 @@ class _MyCatagoriesState extends State<MyCatagories> {
                   padding: EdgeInsets.only(right: 10),
                   child: InkWell(
                     onTap: () {
-                      print("Restaurants pressed");
-                      // print(storeDocs);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RestaurantList()),
+                      );
                     },
                     child: Container(
                       width: 100,
