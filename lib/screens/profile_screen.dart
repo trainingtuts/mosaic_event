@@ -1,11 +1,8 @@
-// ignore_for_file: prefer_const_constructors,
-
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mosaic_event/forms/profile_update_form.dart';
 import 'package:mosaic_event/services/auth_service.dart';
+import 'package:mosaic_event/services/cloud_service.dart';
 import 'package:mosaic_event/theme/theme.dart';
 import 'package:mosaic_event/utils/upload_image.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         backgroundColor: MyColors.primaryColor,
         elevation: 0,
-        leading: Icon(
+        leading: const Icon(
           Icons.arrow_back,
           color: Colors.black,
         ),
@@ -39,13 +36,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Center(
+            return const Center(
               child: Text("Something went wrong"),
             );
           } else if (snapshot.hasData) {
             final data = snapshot.data!;
             return Container(
-              margin: EdgeInsets.all(16.0),
+              margin: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16.0),
@@ -61,19 +58,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         radius: 38.0,
                         backgroundImage: data['profileUrl'] != null
                             ? NetworkImage("${data['profileUrl']}")
-                            : AssetImage("assets/default/default_pp.png")
+                            : const AssetImage("assets/default/default_pp.png")
                                 as ImageProvider,
                         child: GestureDetector(
                           onTap: () {
                             UploadImage.uploadProfileImage();
-                            log("profile Pic");
                           },
-                          child: Align(
+                          child: const Align(
                             alignment: Alignment.bottomRight,
                             child: CircleAvatar(
                               backgroundColor: Colors.white,
                               radius: 12.0,
-                              child: Icon(
+                              child:  Icon(
                                 Icons.camera_alt,
                                 size: 15.0,
                                 color: Color(0xFF404040),
@@ -86,10 +82,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Center(
                     child: Container(
-                      padding: EdgeInsets.only(top: 16.0),
+                      padding: const EdgeInsets.only(top: 16.0),
                       child: Text(
                         "${data['fullname']}",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'SF Pro',
                           fontWeight: FontWeight.w700,
                           fontSize: 24.0,
@@ -99,10 +95,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Center(
                     child: Container(
-                      padding: EdgeInsets.only(top: 8.0),
+                      padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
                         "${data['gender']} | ${data['role']}",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'SF Pro',
                           fontSize: 12.0,
                         ),
@@ -117,18 +113,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => UpdateForm()));
+                                  builder: (context) => const UpdateForm()));
                         },
                         style: TextButton.styleFrom(
                             backgroundColor: Colors.amberAccent),
                         child: Container(
-                          padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                          padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
                           decoration: BoxDecoration(
                             color: MyColors.primaryColor,
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
+                                const BorderRadius.all(Radius.circular(20.0)),
                           ),
-                          child: Text(
+                          child: const Text(
                             'Edit Profile',
                             style: TextStyle(
                               fontFamily: 'SF Pro',
@@ -149,12 +145,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: TextButton.styleFrom(
                           backgroundColor: Colors.amberAccent),
                       child: Container(
-                        padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                        padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
                         decoration: BoxDecoration(
                           color: MyColors.primaryColor,
-                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          borderRadius: const BorderRadius.all(Radius.circular(20.0)),
                         ),
-                        child: Text(
+                        child: const Text(
                           'Delete Profile',
                           style: TextStyle(
                             fontFamily: 'SF Pro',
@@ -170,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             );
           }
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         },

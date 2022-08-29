@@ -1,7 +1,6 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:mosaic_event/screens/settings/carousel_banner_list.dart';
+import 'package:mosaic_event/screens/settings/category/category_list.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -11,7 +10,7 @@ class SettingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Setting"),
+        title: const Text("Setting"),
         centerTitle: true,
       ),
       body: SettingsList(
@@ -20,21 +19,26 @@ class SettingScreen extends StatelessWidget {
             title: const Text('Admin'),
             tiles: <SettingsTile>[
               SettingsTile.navigation(
-                leading: Icon(Icons.view_carousel),
-                title: Text('Carousel'),
-                value: Text('Add | Remove | View Carousel'),
+                leading: const Icon(Icons.view_carousel),
+                title: const Text('Carousel'),
+                value: const Text('Add | Remove | View Carousel'),
                 onPressed: (context) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => CarouselBannerList()));
+                          builder: (context) => const CarouselBannerList()));
                 },
               ),
               SettingsTile.navigation(
-                leading: Icon(Icons.category),
-                title: Text('Category'),
-                value: Text('Add | Remove | View Category'),
-                onPressed: (context) {},
+                leading: const Icon(Icons.category),
+                title: const Text('Category'),
+                value: const Text('Add | Remove | View Category'),
+                onPressed: (context) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CategoryListScreen()));
+                },
               ),
               // SettingsTile.switchTile(
               //   onToggle: (value) {},

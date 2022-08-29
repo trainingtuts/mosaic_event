@@ -25,11 +25,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
-  final List _imageUrl = [
-    "assets/images/image_1.png",
-    "assets/images/image_2.png",
-    "assets/images/image_3.png",
-  ];
   bool showBottomAppBar = true;
 
   @override
