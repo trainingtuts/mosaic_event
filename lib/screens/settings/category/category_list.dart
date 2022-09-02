@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mosaic_event/screens/settings/category/add_category.dart';
+import 'package:mosaic_event/screens/settings/category/update_add_category.dart';
 import 'package:mosaic_event/services/cloud_service.dart';
 import 'package:provider/provider.dart';
 

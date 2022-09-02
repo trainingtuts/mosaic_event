@@ -88,4 +88,42 @@ class UploadImage {
       Fluttertoast.showToast(msg: "Banner Added :)");
     });
   }
+
+  // Upload Business Images
+  static uploadBusinessImages(BuildContext context) async {
+    File? image;
+    final imagePicker = ImagePicker();
+    String? downloadURL;
+
+    final selectedImage = await imagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50);
+
+    if (selectedImage != null) {
+      image = File(selectedImage.path);
+    } else {
+      Fluttertoast.showToast(msg: "No File selected");
+    }
+
+    final imageId =
+        'ban_${DateTime.now().millisecondsSinceEpoch}'; // For unique name
+
+    // Reference reference =
+    // FirebaseStorage.instance.ref().child('carousel_banners').child(imageId);
+    // print('image: $image');
+    // print('image: ${selectedImage!.path}');
+
+    return selectedImage!.path;
+
+    // await reference.putFile(image!);
+    // downloadURL = await reference.getDownloadURL();
+
+    // // cloud firestore
+    // FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    // await firebaseFirestore.collection("carousel_banners").doc(imageId).set({
+    //   'id': imageId,
+    //   'carousel_banners_url': downloadURL,
+    // }).whenComplete(() {
+    //   Fluttertoast.showToast(msg: "Banner Added :)");
+    // });
+  }
 }

@@ -21,7 +21,7 @@ class _MyCarouselState extends State<MyCarousel> {
           FirebaseFirestore.instance.collection("carousel_banners").snapshots(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasError) {
-          log("Something went wrong!");
+          return Text("Something went wrong!");
         } else if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator(),

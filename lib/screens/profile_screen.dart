@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mosaic_event/forms/profile_update_form.dart';
+import 'package:mosaic_event/screens/settings/restaurants/update_add_restaurants.dart';
 import 'package:mosaic_event/services/auth_service.dart';
 import 'package:mosaic_event/services/cloud_service.dart';
 import 'package:mosaic_event/theme/theme.dart';
+import 'package:mosaic_event/utils/my_app_bar.dart';
 import 'package:mosaic_event/utils/upload_image.dart';
 import 'package:provider/provider.dart';
 
@@ -22,14 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final cloudService = Provider.of<CloudService>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: MyColors.primaryColor,
-        elevation: 0,
-        leading: const Icon(
-          Icons.arrow_back,
-          color: Colors.black,
-        ),
-      ),
+      appBar: MyAppBar(title: "Profile Screen"),
       body: StreamBuilder(
         stream:
             cloudService.usersCollection.doc(authService.userID()).snapshots(),
@@ -69,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: CircleAvatar(
                               backgroundColor: Colors.white,
                               radius: 12.0,
-                              child:  Icon(
+                              child: Icon(
                                 Icons.camera_alt,
                                 size: 15.0,
                                 color: Color(0xFF404040),
@@ -118,7 +113,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: TextButton.styleFrom(
                             backgroundColor: Colors.amberAccent),
                         child: Container(
-                          padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                          padding:
+                              const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
                           decoration: BoxDecoration(
                             color: MyColors.primaryColor,
                             borderRadius:
@@ -145,13 +141,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: TextButton.styleFrom(
                           backgroundColor: Colors.amberAccent),
                       child: Container(
-                        padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                        padding:
+                            const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
                         decoration: BoxDecoration(
                           color: MyColors.primaryColor,
-                          borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20.0)),
                         ),
                         child: const Text(
                           'Delete Profile',
+                          style: TextStyle(
+                            fontFamily: 'SF Pro',
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const UpdateOrAddRestaurant()),
+                        );
+                      },
+                      style: TextButton.styleFrom(
+                          backgroundColor: Colors.amberAccent),
+                      child: Container(
+                        padding:
+                            const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                        decoration: BoxDecoration(
+                          color: MyColors.primaryColor,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20.0)),
+                        ),
+                        child: const Text(
+                          'Add Business Details',
                           style: TextStyle(
                             fontFamily: 'SF Pro',
                             color: Colors.white,
