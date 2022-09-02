@@ -26,12 +26,13 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
           if (snapshot.hasError) {
             return Text("Something went wrong! ${snapshot.error}");
           } else if (snapshot.hasData) {
-            return ListView.builder(
+            if (snapshot.data!.docs.isNotEmpty) {
+              return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (BuildContext context, index) {
                   return ListTile(
-                    title: Text(snapshot.data!.docs[index]['cate_name']),
-                    subtitle: Text(snapshot.data!.docs[index]['cate_id']),
+                    title: Text(snapshot.data!.docs[index]['cateName']),
+                    subtitle: Text(snapshot.data!.docs[index]['cateId']),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -42,7 +43,7 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
                                 MaterialPageRoute(
                                   builder: (context) => UpdateOrAddCategory(
                                     cateId: snapshot.data!.docs[index]
-                                        ['cate_id'],
+                                        ['cateId'],
                                   ),
                                 ),
                               );
@@ -53,7 +54,7 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
                         IconButton(
                             onPressed: () {
                               deleteCategory(
-                                  snapshot.data!.docs[index]['cate_id']);
+                                  snapshot.data!.docs[index]['cateId']);
                             },
                             icon: const Icon(
                               Icons.delete,
@@ -61,7 +62,18 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
                       ],
                     ),
                   );
-                });
+                },
+              );
+            } else {
+              return const Center(
+                  child: Text(
+                "Sorry, There is no data right now.\nPlease add some categories first.",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ));
+            }
           } else {
             return const Center(
               child: CircularProgressIndicator(),

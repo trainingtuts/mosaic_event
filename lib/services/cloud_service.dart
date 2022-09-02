@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mosaic_event/models/category_model.dart';
 
 class CloudService {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
@@ -20,10 +21,16 @@ class CloudService {
   Future addCategory(String categoryName) async {
     final cateId =
         'cate_${DateTime.now().millisecondsSinceEpoch}'; // For unique id
-    await categoryCollection.doc(cateId).set({
-      'cate_id': cateId,
-      'cate_name': categoryName,
-    }).whenComplete(() {
+
+    // calling our cate_model
+    CategoryModel categoryModel = CategoryModel();
+    categoryModel.cateId = cateId;
+    categoryModel.cateName = categoryName;
+
+    await categoryCollection
+        .doc(cateId)
+        .set(categoryModel.toMap())
+        .whenComplete(() {
       Fluttertoast.showToast(msg: "Category $categoryName Added");
     });
   }
