@@ -91,21 +91,17 @@ class UploadImage {
 
   // Upload Business Images
   static uploadBusinessImages(BuildContext context) async {
-    File? image;
     final imagePicker = ImagePicker();
-    String? downloadURL;
 
     final selectedImage = await imagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 50);
 
     if (selectedImage != null) {
-      image = File(selectedImage.path);
     } else {
       Fluttertoast.showToast(msg: "No File selected");
     }
 
-    final imageId =
-        'ban_${DateTime.now().millisecondsSinceEpoch}'; // For unique name
+// For unique name
 
     // Reference reference =
     // FirebaseStorage.instance.ref().child('carousel_banners').child(imageId);

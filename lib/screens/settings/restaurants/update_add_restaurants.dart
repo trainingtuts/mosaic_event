@@ -4,6 +4,8 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mosaic_event/models/category_model.dart';
 import 'package:mosaic_event/services/cloud_service.dart';
 import 'package:mosaic_event/utils/my_app_bar.dart';
 import 'package:mosaic_event/utils/upload_image.dart';
@@ -18,9 +20,13 @@ class UpdateOrAddRestaurant extends StatefulWidget {
 
 class _UpdateOrAddRestaurantState extends State<UpdateOrAddRestaurant> {
   final TextEditingController businessController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
 
   String? _selectedCategory;
   String? _imgPath;
+
+  // form key
+  final businessFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +37,11 @@ class _UpdateOrAddRestaurantState extends State<UpdateOrAddRestaurant> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
+          key: businessFormKey,
           child: SingleChildScrollView(
             child: Column(
               children: [
+                // Business Name
                 TextFormField(
                   autofocus: true,
                   controller: businessController,
@@ -56,6 +64,36 @@ class _UpdateOrAddRestaurantState extends State<UpdateOrAddRestaurant> {
                     prefixIcon: const Icon(Icons.business),
                     contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                     hintText: "Business Name",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                // Initial Price
+                TextFormField(
+                  controller: priceController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  validator: (value) {
+                    RegExp regex = RegExp(r'^.{1,}$');
+                    if (value!.isEmpty) {
+                      return "Enter Initial Price";
+                    }
+                    if (!regex.hasMatch(value)) {
+                      return "Enter minimum 3 Character";
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    priceController.text = value!;
+                  },
+                  textInputAction: TextInputAction.next,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.currency_rupee),
+                    contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                    hintText: "Initial Price",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10)),
                   ),
@@ -108,6 +146,7 @@ class _UpdateOrAddRestaurantState extends State<UpdateOrAddRestaurant> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // Images
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -127,6 +166,7 @@ class _UpdateOrAddRestaurantState extends State<UpdateOrAddRestaurant> {
                       ),
                     ),
                     const SizedBox(width: 10),
+                    // Submit Button
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -134,11 +174,14 @@ class _UpdateOrAddRestaurantState extends State<UpdateOrAddRestaurant> {
                         ),
                       ),
                       onPressed: () {
-                        // if (formKey.currentState!.validate()) {
-                        //   cloudService.addCategory(categoryController.text);
-                        //   categoryController.clear();
-                        //   Navigator.of(context).pop();
-                        // }
+                        if (businessFormKey.currentState!.validate()) {
+                          cloudService.addBusiness(
+                              businessName: businessController.text,
+                              initialPrice: priceController.text,
+                              categoryId: _selectedCategory!);
+                          // businessController.clear();
+                          // Navigator.of(context).pop();
+                        }
                       },
                       child: const Text(
                         "Add Businesss",

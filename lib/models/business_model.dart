@@ -1,15 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // import 'dart:convert';
 
-import 'package:mosaic_event/models/category_model.dart';
-import 'package:mosaic_event/models/user_model.dart';
-
 class BusinessModel {
-  UserModel? owner;
+  String? owner;
   String? busiId;
   String? busiName;
-  num? initialPrice;
-  CategoryModel? busiCategory;
+  String? initialPrice;
+  String? busiCategory;
+  List? images;
   DateTime? joiningDate;
   BusinessModel({
     this.owner,
@@ -18,6 +16,7 @@ class BusinessModel {
     this.initialPrice,
     this.busiCategory,
     this.joiningDate,
+    this.images,
   });
   // location
 
@@ -41,11 +40,12 @@ class BusinessModel {
 */
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'owner': owner?.toMap(),
+      'owner': owner,
       'busiId': busiId,
       'busiName': busiName,
       'initialPrice': initialPrice,
-      'busiCategory': busiCategory?.toMap(),
+      'busiCategory': busiCategory,
+      'images': images,
       'joiningDate': joiningDate?.millisecondsSinceEpoch,
     };
   }

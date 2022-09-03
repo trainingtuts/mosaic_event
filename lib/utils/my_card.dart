@@ -1,7 +1,13 @@
+// ignore_for_file: prefer_const_constructors, must_be_immutable, unnecessary_string_interpolations
+
 import 'package:flutter/material.dart';
 
 class MyCard extends StatelessWidget {
-  const MyCard({Key? key}) : super(key: key);
+  String name;
+  String id;
+  String price;
+  MyCard({Key? key, required this.name, required this.id, required this.price})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +43,14 @@ class MyCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Name",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  Text(
+                    name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(right: 16.0),
                     child: Text(
-                      "Discription",
+                      id,
                       style: TextStyle(),
                       textScaleFactor: 0.9,
                     ),
@@ -55,8 +61,8 @@ class MyCard extends StatelessWidget {
                       alignment: MainAxisAlignment.spaceBetween,
                       buttonPadding: EdgeInsets.zero,
                       children: [
-                        const Text(
-                          "150",
+                        Text(
+                          "Rs. $price",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),

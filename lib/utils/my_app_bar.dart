@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   String? title;
   MyAppBar({Key? key, required this.title}) : super(key: key);
