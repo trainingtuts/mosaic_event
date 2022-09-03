@@ -90,36 +90,30 @@ class UploadImage {
   }
 
   // Upload Business Images
-  static uploadBusinessImages(BuildContext context) async {
-    final imagePicker = ImagePicker();
+  static uploadBusinessImages(BuildContext context, businessId, image) async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    final imageId =
+        'ban_${DateTime.now().millisecondsSinceEpoch}'; // For unique name
+    String? downloadURL;
+    Reference reference = FirebaseStorage.instance
+        .ref()
+        .child('business_images')
+        .child(userId)
+        .child(businessId)
+        .child(imageId);
 
-    final selectedImage = await imagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50);
+    await reference.putFile(image!);
+    downloadURL = await reference.getDownloadURL();
 
-    if (selectedImage != null) {
-    } else {
-      Fluttertoast.showToast(msg: "No File selected");
-    }
-
-// For unique name
-
-    // Reference reference =
-    // FirebaseStorage.instance.ref().child('carousel_banners').child(imageId);
-    // print('image: $image');
-    // print('image: ${selectedImage!.path}');
-
-    return selectedImage!.path;
-
-    // await reference.putFile(image!);
-    // downloadURL = await reference.getDownloadURL();
-
-    // // cloud firestore
-    // FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    // await firebaseFirestore.collection("carousel_banners").doc(imageId).set({
-    //   'id': imageId,
-    //   'carousel_banners_url': downloadURL,
-    // }).whenComplete(() {
-    //   Fluttertoast.showToast(msg: "Banner Added :)");
-    // });
+    // cloud firestore
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    await firebaseFirestore
+        .collection("businesses")
+        .doc(businessId)
+        .update({'images': [downloadURL]}).whenComplete(() {
+      Fluttertoast.showToast(msg: "Business Added :)");
+    }).catchError((e) {
+      Fluttertoast.showToast(msg: e);
+    });
   }
 }

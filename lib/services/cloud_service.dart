@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mosaic_event/models/business_model.dart';
 import 'package:mosaic_event/models/category_model.dart';
+import 'package:mosaic_event/utils/upload_image.dart';
 
 class CloudService {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
@@ -11,6 +15,9 @@ class CloudService {
   // GET: Users Collection
   CollectionReference get usersCollection =>
       _firebaseFirestore.collection('users');
+
+  // GET: User By ID
+  getUserById({required String uid}) => usersCollection.doc(uid).get();
 
   // GET: Category Collection
   CollectionReference get categoryCollection =>
@@ -61,7 +68,9 @@ class CloudService {
   Future addBusiness(
       {required String businessName,
       required String initialPrice,
-      required String categoryId}) async {
+      required String categoryId,
+      required BuildContext context,
+      required File image}) async {
     final businessId =
         'busi_${DateTime.now().millisecondsSinceEpoch}'; // For unique id
 
@@ -78,7 +87,7 @@ class CloudService {
         .doc(businessId)
         .set(businessModel.toMap())
         .whenComplete(() {
-      Fluttertoast.showToast(msg: "Business $businessName Added");
+      UploadImage.uploadBusinessImages(context, businessId, image);
     }).catchError((e) {
       Fluttertoast.showToast(msg: e);
     });

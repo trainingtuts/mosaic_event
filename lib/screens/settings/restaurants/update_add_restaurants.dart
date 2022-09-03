@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors, unused_import, unused_field
 
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mosaic_event/models/category_model.dart';
 import 'package:mosaic_event/services/cloud_service.dart';
 import 'package:mosaic_event/utils/my_app_bar.dart';
@@ -27,6 +29,8 @@ class _UpdateOrAddRestaurantState extends State<UpdateOrAddRestaurant> {
 
   // form key
   final businessFormKey = GlobalKey<FormState>();
+
+  File? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -142,6 +146,7 @@ class _UpdateOrAddRestaurantState extends State<UpdateOrAddRestaurant> {
                     );
                   },
                 )),
+
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -154,7 +159,7 @@ class _UpdateOrAddRestaurantState extends State<UpdateOrAddRestaurant> {
                         ),
                       ),
                       onPressed: () {
-                        UploadImage.uploadBusinessImages(context);
+                        imagePickerMethod();
                       },
                       child: const Text(
                         "Select Images",
@@ -176,11 +181,13 @@ class _UpdateOrAddRestaurantState extends State<UpdateOrAddRestaurant> {
                       onPressed: () {
                         if (businessFormKey.currentState!.validate()) {
                           cloudService.addBusiness(
+                              context: context,
                               businessName: businessController.text,
                               initialPrice: priceController.text,
-                              categoryId: _selectedCategory!);
-                          // businessController.clear();
-                          // Navigator.of(context).pop();
+                              categoryId: _selectedCategory!,
+                              image: _image!);
+                          businessController.clear();
+                          Navigator.of(context).pop();
                         }
                       },
                       child: const Text(
@@ -194,11 +201,44 @@ class _UpdateOrAddRestaurantState extends State<UpdateOrAddRestaurant> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 10),
+                if (_image != null)
+                  Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Image.file(_image!),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future imagePickerMethod() async {
+    final imagePicker = ImagePicker();
+    final pick = await imagePicker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 50,
+    );
+    setState(() {
+      if (pick!.path != null) {
+        _image = File(pick.path);
+      } else {
+        log("image not picked");
+      }
+    });
   }
 }

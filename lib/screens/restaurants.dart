@@ -24,7 +24,7 @@ class RestaurantList extends StatelessWidget {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (BuildContext context, index) {
                   final businessName = snapshot.data!.docs[index]['busiName'];
-                  final businessId = snapshot.data!.docs[index]['busiId'];
+                  final businessId = snapshot.data!.docs[index]['owner'];
                   final initialPrice =
                       snapshot.data!.docs[index]['initialPrice'];
                   return MyCard(
