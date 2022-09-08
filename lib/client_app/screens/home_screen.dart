@@ -6,14 +6,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mosaic_event/models/user_model.dart';
 import 'package:mosaic_event/services/auth_service.dart';
 import 'package:mosaic_event/theme/theme.dart';
-import 'package:mosaic_event/utils/bottom_appbar.dart';
-import 'package:mosaic_event/utils/carousel.dart';
-import 'package:mosaic_event/utils/categories.dart';
-import 'package:mosaic_event/utils/drawer.dart';
-import 'package:mosaic_event/utils/heading.dart';
+import 'package:mosaic_event/client_app/utils/bottom_appbar.dart';
+import 'package:mosaic_event/client_app/utils/carousel.dart';
+import 'package:mosaic_event/client_app/utils/categories.dart';
+import 'package:mosaic_event/client_app/utils/drawer.dart';
+import 'package:mosaic_event/client_app/utils/heading.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {

@@ -7,10 +7,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mosaic_event/models/category_model.dart';
+
 import 'package:mosaic_event/services/cloud_service.dart';
-import 'package:mosaic_event/utils/my_app_bar.dart';
-import 'package:mosaic_event/utils/upload_image.dart';
+import 'package:mosaic_event/client_app/utils/my_app_bar.dart';
+import 'package:mosaic_event/client_app/utils/upload_image.dart';
 import 'package:provider/provider.dart';
 
 class UpdateOrAddRestaurant extends StatefulWidget {

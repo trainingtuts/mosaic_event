@@ -3,7 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mosaic_event/services/cloud_service.dart';
-import 'package:mosaic_event/utils/my_card.dart';
+import 'package:mosaic_event/client_app/utils/my_card.dart';
 import 'package:provider/provider.dart';
 
 class RestaurantList extends StatelessWidget {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mosaic_event/screens/authentication/signup_screen.dart';
+import 'package:mosaic_event/client_app/screens/authentication/signup_screen.dart';
+
 import 'package:mosaic_event/services/auth_service.dart';
 import 'package:provider/provider.dart';
 

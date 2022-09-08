@@ -2,13 +2,12 @@
 // ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
-import 'package:mosaic_event/screens/home_screen.dart';
-import 'package:mosaic_event/screens/authentication/login_screen.dart';
-import 'package:mosaic_event/screens/authentication/signup_screen.dart';
+import 'package:mosaic_event/client_app/models/user_model.dart';
+import 'package:mosaic_event/client_app/screens/authentication/login_screen.dart';
+import 'package:mosaic_event/client_app/screens/home_screen.dart';
 import 'package:mosaic_event/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
-import '../models/user_model.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key}) : super(key: key);

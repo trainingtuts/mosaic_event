@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mosaic_event/screens/settings/carousel_banner_list.dart';
-import 'package:mosaic_event/screens/settings/category/category_list.dart';
+import 'package:mosaic_event/client_app/screens/settings/carousel_banner_list.dart';
+import 'package:mosaic_event/client_app/screens/settings/category/category_list.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SettingScreen extends StatelessWidget {

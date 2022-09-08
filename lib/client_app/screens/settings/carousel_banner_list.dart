@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mosaic_event/utils/upload_image.dart';
+import 'package:mosaic_event/client_app/utils/upload_image.dart';
 
 class CarouselBannerList extends StatefulWidget {
   const CarouselBannerList({Key? key}) : super(key: key);

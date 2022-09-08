@@ -4,9 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mosaic_event/models/business_model.dart';
-import 'package:mosaic_event/models/category_model.dart';
-import 'package:mosaic_event/utils/upload_image.dart';
+import 'package:mosaic_event/client_app/models/business_model.dart';
+import 'package:mosaic_event/client_app/models/category_model.dart';
+import 'package:mosaic_event/client_app/utils/upload_image.dart';
+
 
 class CloudService {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;

@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:mosaic_event/screens/restaurants.dart';
+import 'package:mosaic_event/client_app/screens/restaurants.dart';
 import 'package:mosaic_event/theme/theme.dart';
 
 // import '../themes/my_theme.dart';

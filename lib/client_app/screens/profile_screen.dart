@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mosaic_event/forms/profile_update_form.dart';
-import 'package:mosaic_event/screens/settings/restaurants/update_add_restaurants.dart';
+import 'package:mosaic_event/client_app/forms/profile_update_form.dart';
+import 'package:mosaic_event/client_app/screens/settings/restaurants/update_add_restaurants.dart';
 import 'package:mosaic_event/services/auth_service.dart';
 import 'package:mosaic_event/services/cloud_service.dart';
 import 'package:mosaic_event/theme/theme.dart';
-import 'package:mosaic_event/utils/my_app_bar.dart';
-import 'package:mosaic_event/utils/upload_image.dart';
+import 'package:mosaic_event/client_app/utils/my_app_bar.dart';
+import 'package:mosaic_event/client_app/utils/upload_image.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {

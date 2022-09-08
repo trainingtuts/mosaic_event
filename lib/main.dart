@@ -1,7 +1,7 @@
 import 'package:mosaic_event/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mosaic_event/services/cloud_service.dart';
-import 'package:mosaic_event/utils/wrapper.dart';
+import 'package:mosaic_event/vendor_app/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.brown,
         ),
-        home: const Wrapper(),
+        home: const VendorHomeScreen(),
       ),
     );
   }

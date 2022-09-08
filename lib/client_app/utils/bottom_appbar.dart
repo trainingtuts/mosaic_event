@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:mosaic_event/screens/profile_screen.dart';
+import 'package:mosaic_event/client_app/screens/profile_screen.dart';
 import 'package:mosaic_event/theme/theme.dart';
 
 class MyBottomAppBar extends StatefulWidget {

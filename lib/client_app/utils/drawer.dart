@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mosaic_event/screens/setting_screen.dart';
+import 'package:mosaic_event/client_app/screens/setting_screen.dart';
 import 'package:mosaic_event/services/auth_service.dart';
 import 'package:mosaic_event/theme/theme.dart';
 import 'package:provider/provider.dart';
