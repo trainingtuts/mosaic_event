@@ -234,11 +234,7 @@ class _UpdateOrAddRestaurantState extends State<UpdateOrAddRestaurant> {
       imageQuality: 50,
     );
     setState(() {
-      if (pick!.path != null) {
-        _image = File(pick.path);
-      } else {
-        log("image not picked");
-      }
+      _image = File(pick!.path);
     });
   }
 }
